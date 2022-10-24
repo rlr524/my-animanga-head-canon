@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAnimangaHeadCanonUI", "MyAnimangaHeadCanonUI\MyAnimangaHeadCanonUI.csproj", "{9F416FC6-0018-4D00-AEDE-382FDD740028}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAnimangaAppLibrary", "MyAnimangaAppLibrary\MyAnimangaAppLibrary.csproj", "{AC0BC0C6-A6A4-4B29-9DD8-6648EFBF4F16}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB44939A-C504-4931-AB03-2276B57777DA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F416FC6-0018-4D00-AEDE-382FDD740028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F416FC6-0018-4D00-AEDE-382FDD740028}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F416FC6-0018-4D00-AEDE-382FDD740028}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F416FC6-0018-4D00-AEDE-382FDD740028}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC0BC0C6-A6A4-4B29-9DD8-6648EFBF4F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC0BC0C6-A6A4-4B29-9DD8-6648EFBF4F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC0BC0C6-A6A4-4B29-9DD8-6648EFBF4F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC0BC0C6-A6A4-4B29-9DD8-6648EFBF4F16}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5FCA7B3-DF67-4784-9FFC-BCBEEA05C5F8}
+	EndGlobalSection
+EndGlobal
