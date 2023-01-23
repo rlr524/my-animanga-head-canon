@@ -15,5 +15,12 @@ public class SourceModel
     public string SourceName { get; set; }
     public string SourceDescriptionShort { get; set; }
     public string SourceType { get; set; }
-    public HashSet<string> UserFavorites { get; set; }
+    public string SourcePublicationYear { get; set; }
+    public string SourceStudio { get; set; }
+    public string SourcePublisher { get; set; }
+    public string SourceSeasons { get; set; }
+    public string SourceVolumes { get; set; }
+    public string SourceDescriptionLong { get; set; }
+    public List<BasicSuggestionModel> SourceSuggestions { get; set; } = new();
+    public HashSet<string> UserFavorites { get; set; } = new();
 }
