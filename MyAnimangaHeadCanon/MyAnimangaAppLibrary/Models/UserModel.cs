@@ -1,9 +1,7 @@
-// MyAnimangaHeadCanon
-// MyAnimangaAppLibrary
 // UserModel.cs
-// Created: 01 22 2023
-// Author: Rob Ranf (robranf)
-// (C) 2023 Emiya Consulting, LLC
+// robranf | rlr524@hotmail.com
+// Created 1/23/2023
+
 namespace MyAnimangaAppLibrary.Models;
 
 public class UserModel
