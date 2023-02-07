@@ -1,6 +1,12 @@
-﻿using MongoDB.Driver;
+// MyAnimangaHeadCanon
+// MyAnimangaAppLibrary
+// IDbConnection.cs
+// Created: 01 26 2023
+// Author: Rob Ranf (robranf)
+// (C) 2023 Emiya Consulting, LLC
 
 namespace MyAnimangaAppLibrary.DataAccess;
+
 public interface IDbConnection
 {
     string DbName { get; }
