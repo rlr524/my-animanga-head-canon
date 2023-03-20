@@ -1,4 +1,4 @@
-﻿/** 
+﻿/* 
 * MongoStatusData.cs
 * Controllers library for Status collection
 * rlr52 | rob@emiyaconsulting.com

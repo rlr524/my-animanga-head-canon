@@ -1,4 +1,4 @@
-﻿/** 
+﻿/* 
  * IUserData.cs
  * Interface for controllers library for Category collection
  * rlr52 | rob@emiyaconsulting.com

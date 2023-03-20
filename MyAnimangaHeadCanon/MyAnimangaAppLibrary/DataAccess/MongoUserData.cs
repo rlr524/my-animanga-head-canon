@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * MongoUserData.cs
  * Controllers library for User collection
  * robranf | rob@emiyaconsulting.com
