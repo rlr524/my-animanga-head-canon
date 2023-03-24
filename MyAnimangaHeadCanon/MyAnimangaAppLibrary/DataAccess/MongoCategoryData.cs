@@ -7,7 +7,6 @@
 */
 
 using Microsoft.Extensions.Caching.Memory;
-using System.ComponentModel.DataAnnotations;
 
 namespace MyAnimangaAppLibrary.DataAccess;
 public class MongoCategoryData : ICategoryData
@@ -30,7 +29,7 @@ public class MongoCategoryData : ICategoryData
             var results = await _categories.FindAsync(_ => true);
             output = results.ToList();
 
-            _cache.Set(CacheName, output, TimeSpan.FromDays(1));
+            _cache.Set(CacheName, output, Globals.OneDay);
         }
 
         return output;
