@@ -14,7 +14,7 @@ namespace MyAnimangaAppLibrary.Models;
 
 public class BasicUserModel
 {
-    private string Id { get; set; }
+    public string Id { get; set; }
     private string DisplayName { get; set; }
 
     public BasicUserModel()

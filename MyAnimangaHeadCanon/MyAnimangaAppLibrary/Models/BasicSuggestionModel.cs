@@ -15,7 +15,7 @@ namespace MyAnimangaAppLibrary.Models;
 public class BasicSuggestionModel
 {
     [BsonRepresentation(BsonType.ObjectId)]
-    private string Id { get; set; }
+    public string Id { get; set; }
     private string Suggestion { get; set; }
 
     // When you create an explicit constructor as below with BasicSuggestionModel(SuggestionModel suggestion)
