@@ -1,0 +1,93 @@
+﻿@page "/SampleData"
+@inject ICategoryData categoryData
+@inject IStatusData statusData
+
+<h3>Sample Data</h3>
+
+@if (categoriesCreated)
+{
+    <h4>Categories have been created</h4>
+} else
+{
+    <button class="btn btn-primary" @onclick="CreateCategories">Create Categories</button>
+}
+
+@if (statusesCreated)
+{
+    <h4>Statuses have been created</h4>
+} else
+{
+    <button class="btn btn-primary" @onclick="CreateStatuses">Create Statuses</button>
+}
+
+
+
+
+@code {
+    private bool categoriesCreated = false;
+    private bool statusesCreated = false;
+
+    private async Task CreateCategories()
+    {
+        var categories = await categoryData.GetAllCategories();
+
+        if (categories?.Count > 0)
+        {
+            return;
+        }
+
+        CategoryModel cm = new CategoryModel();
+        cm.CategoryName = "anime";
+        cm.CategoryDescription = "A head canon entry for an anime";
+        await categoryData.CreateCategory(cm);
+
+        cm = new();
+        cm.CategoryName = "manga";
+        cm.CategoryDescription = "A head canon entry for a manga";
+        await categoryData.CreateCategory(cm);
+
+        cm = new();
+        cm.CategoryName = "doujinshi";
+        cm.CategoryDescription = "A head canon entry for a doujin";
+        await categoryData.CreateCategory(cm);
+
+        cm = new();
+        cm.CategoryName = "other";
+        cm.CategoryDescription = "A head canon entry for another form of media";
+        await categoryData.CreateCategory(cm);
+
+        categoriesCreated = true;
+    }
+
+    private async Task CreateStatuses()
+    {
+        var statuses = await statusData.GetAllStatuses();
+
+        if (statuses?.Count > 0)
+        {
+            return;
+        }
+
+        StatusModel sm = new StatusModel();
+        sm.StatusName = "open";
+        sm.StatusDescription = "Entry is open for voting";
+        await statusData.CreateStatus(sm);
+
+        sm = new();
+        sm.StatusName = "closed";
+        sm.StatusDescription = "Entry is still visible, but closed to voting";
+        await statusData.CreateStatus(sm);
+
+        sm = new();
+        sm.StatusName = "archived";
+        sm.StatusDescription = "Entry has been archived and is no longer visible";
+        await statusData.CreateStatus(sm);
+
+        sm = new();
+        sm.StatusName = "rejected";
+        sm.StatusDescription = "Entry has been rejected due to violation of site rules and is not visible";
+        await statusData.CreateStatus(sm);
+
+        statusesCreated = true;
+    }
+}
