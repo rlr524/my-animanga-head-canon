@@ -25,13 +25,4 @@ public class SuggestionModel
     public StatusModel SuggestionStatus { get; set; }
     public string OwnerNotes { get; set; }
     public bool TopVoteGetter { get; set; } = false;
-    // Archiving moves an item to a parent anime / manga's archive
-    // It can be resurrected with a specific number of votes for resurrection
-    // An example may be a suggestion that is made in season 1 and is "ahead of its time" but gains traction
-    // due to events in a later season.
-    public bool Archived { get; set; } = false;
-    // Rejection removes the item from all views; used for an item that violates community guidelines 
-    public bool Rejected { get; set; } = false;
-    // Repeat is a suggestion that has been flagged as a repeat 
-    public bool Repeat { get; set; } = false;
 }

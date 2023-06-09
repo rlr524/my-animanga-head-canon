@@ -1,93 +1,227 @@
 ﻿@page "/SampleData"
-@inject ICategoryData categoryData
-@inject IStatusData statusData
+@inject ICategoryData CategoryData
+@inject IStatusData StatusData
+@inject IUserData UserData
+@inject ISuggestionData SuggestionData
+@inject ISourceData SourceData
 
 <h3>Sample Data</h3>
 
-@if (categoriesCreated)
+@if (_categoriesCreated)
 {
     <h4>Categories have been created</h4>
 } else
 {
-    <button class="btn btn-primary" @onclick="CreateCategories">Create Categories</button>
+    <button class="btn btn-primary" @onclick="@CreateCategories">Create Categories</button>
 }
 
-@if (statusesCreated)
+@if (_statusesCreated)
 {
     <h4>Statuses have been created</h4>
 } else
 {
-    <button class="btn btn-primary" @onclick="CreateStatuses">Create Statuses</button>
+    <button class="btn btn-primary" @onclick="@CreateStatuses">Create Statuses</button>
 }
 
-
-
+@if (_sampleDataCreated)
+{
+    <h4>Sample data has been created</h4>
+}
+else
+{
+    <button class="btn btn-danger" @onclick="@CreateSampleData">Create Sample Data</button>
+}
 
 @code {
-    private bool categoriesCreated = false;
-    private bool statusesCreated = false;
+    private bool _categoriesCreated;
+    private bool _statusesCreated;
+    private bool _sampleDataCreated;
 
     private async Task CreateCategories()
     {
-        var categories = await categoryData.GetAllCategories();
+        var categories = await CategoryData.GetAllCategories();
 
         if (categories?.Count > 0)
         {
             return;
         }
 
-        CategoryModel cm = new CategoryModel();
-        cm.CategoryName = "anime";
-        cm.CategoryDescription = "A head canon entry for an anime";
-        await categoryData.CreateCategory(cm);
+        CategoryModel cm = new CategoryModel
+        {
+            CategoryName = "anime",
+            CategoryDescription = "A head canon entry for an anime"
+        };
+        await CategoryData.CreateCategory(cm);
 
-        cm = new();
-        cm.CategoryName = "manga";
-        cm.CategoryDescription = "A head canon entry for a manga";
-        await categoryData.CreateCategory(cm);
+        cm = new CategoryModel
+        {
+            CategoryName = "manga",
+            CategoryDescription = "A head canon entry for a manga"
+        };
+        await CategoryData.CreateCategory(cm);
 
-        cm = new();
-        cm.CategoryName = "doujinshi";
-        cm.CategoryDescription = "A head canon entry for a doujin";
-        await categoryData.CreateCategory(cm);
+        cm = new CategoryModel
+        {
+            CategoryName = "doujinshi",
+            CategoryDescription = "A head canon entry for a doujin"
+        };
+        await CategoryData.CreateCategory(cm);
 
-        cm = new();
-        cm.CategoryName = "other";
-        cm.CategoryDescription = "A head canon entry for another form of media";
-        await categoryData.CreateCategory(cm);
+        cm = new CategoryModel
+        {
+            CategoryName = "other",
+            CategoryDescription = "A head canon entry for another form of media"
+        };
+        await CategoryData.CreateCategory(cm);
 
-        categoriesCreated = true;
+        _categoriesCreated = true;
     }
 
     private async Task CreateStatuses()
     {
-        var statuses = await statusData.GetAllStatuses();
+        var statuses = await StatusData.GetAllStatuses();
 
         if (statuses?.Count > 0)
         {
             return;
         }
 
-        StatusModel sm = new StatusModel();
-        sm.StatusName = "open";
-        sm.StatusDescription = "Entry is open for voting";
-        await statusData.CreateStatus(sm);
+        StatusModel sm = new StatusModel
+        {
+            StatusName = "open",
+            StatusDescription = "Entry is open for voting"
+        };
+        await StatusData.CreateStatus(sm);
 
-        sm = new();
-        sm.StatusName = "closed";
-        sm.StatusDescription = "Entry is still visible, but closed to voting";
-        await statusData.CreateStatus(sm);
+        sm = new StatusModel
+        {
+            StatusName = "closed",
+            StatusDescription = "Entry is still visible, but closed to voting"
+        };
+        await StatusData.CreateStatus(sm);
 
-        sm = new();
-        sm.StatusName = "archived";
-        sm.StatusDescription = "Entry has been archived and is no longer visible";
-        await statusData.CreateStatus(sm);
+        sm = new StatusModel
+        {
+            StatusName = "archived",
+            StatusDescription = "Entry has been archived and is no longer visible"
+        };
+        await StatusData.CreateStatus(sm);
 
-        sm = new();
-        sm.StatusName = "rejected";
-        sm.StatusDescription = "Entry has been rejected due to violation of site rules and is not visible";
-        await statusData.CreateStatus(sm);
+        sm = new StatusModel
+        {
+            StatusName = "rejected",
+            StatusDescription = "Entry has been rejected due to violation of site rules and is not visible"
+        };
+        await StatusData.CreateStatus(sm);
+        
+        sm = new StatusModel
+        {
+            StatusName = "repeat",
+            StatusDescription = "Entry has been marked as a repeat and voting has been disabled"
+        };
+        await StatusData.CreateStatus(sm);
 
-        statusesCreated = true;
+        _statusesCreated = true;
+    }
+    
+        private async Task CreateSampleData()
+    {
+        UserModel user = new UserModel
+        {
+            FirstName = "Rob",
+            LastName = "Ranf",
+            EmailAddress = "rob@emiyaconsulting.com",
+            DisplayName = "Sample Rob Ranf",
+            ObjectIdentifier = "abc-123"
+        };
+        await UserData.CreateUser(user);
+
+        var foundUser = await UserData.GetUserFromAuthentication("abc-123");
+        var categories = await CategoryData.GetAllCategories();
+        var statuses = await StatusData.GetAllStatuses();
+
+        HashSet<string> votes = new()
+        {
+            "1",
+            "2",
+            "3"
+        };
+
+        SuggestionModel suggestion = new()
+        {
+            Author = new BasicUserModel(foundUser),
+            Category = categories[0],
+            SuggestionName = "First sample suggestion",
+            SuggestionDescription = "This is a sample suggestion created by the sample data page"
+        };
+        await SuggestionData.CreateSuggestion(suggestion);
+        
+        suggestion = new SuggestionModel
+        {
+            Author = new BasicUserModel(foundUser),
+            Category = categories[1],
+            SuggestionName = "Second sample suggestion",
+            SuggestionDescription = "This is another sample suggestion created by the sample data page",
+            SuggestionStatus = statuses[0],
+            UserVotes = votes,
+            OwnerNotes = "This is an owner note for a sample status."
+        };
+        await SuggestionData.CreateSuggestion(suggestion);
+
+        votes.Add("4");
+        
+        suggestion = new SuggestionModel
+        {
+            Author = new BasicUserModel(foundUser),
+            Category = categories[2],
+            SuggestionName = "Third sample suggestion",
+            SuggestionDescription = "This is another sample suggestion created by the sample data page",
+            SuggestionStatus = statuses[1],
+            UserVotes = votes,
+            OwnerNotes = "This is an owner note for a sample status."
+        };
+        await SuggestionData.CreateSuggestion(suggestion);
+        
+        suggestion = new SuggestionModel
+        {
+            Author = new BasicUserModel(foundUser),
+            Category = categories[3],
+            SuggestionName = "Fourth sample suggestion",
+            SuggestionDescription = "This is another sample suggestion created by the sample data page",
+            SuggestionStatus = statuses[2],
+            OwnerNotes = "This is an owner note for a sample status."
+        };
+        await SuggestionData.CreateSuggestion(suggestion);
+        
+        suggestion = new SuggestionModel
+        {
+            Author = new BasicUserModel(foundUser),
+            Category = categories[3],
+            SuggestionName = "Fifth sample suggestion",
+            SuggestionDescription = "This is another sample suggestion created by the sample data page",
+            SuggestionStatus = statuses[2],
+            OwnerNotes = "This is an owner note for a sample status."
+        };
+        await SuggestionData.CreateSuggestion(suggestion);
+
+        SourceModel source = new()
+        {
+            SourceName = "K-On!",
+            SourceType = "anime",
+            SourceStudio = "Kyoto Animation",
+            SourceDescriptionShort = "Cute girls doing musical things!"
+        };
+        await SourceData.CreateSource(source);
+        
+        source = new SourceModel
+        {
+            SourceName = "Attack on Titan",
+            SourceType = "manga",
+            SourcePublisher = "Kodansha",
+            SourceDescriptionShort = "Sie Sind Das Essen Und Wir Sind Die Jager!"
+        };
+        await SourceData.CreateSource(source);
+
+        _sampleDataCreated = true;
     }
 }

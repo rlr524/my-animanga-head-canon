@@ -29,7 +29,7 @@ public class MongoSuggestionData : ISuggestionData
         var output = _cache.Get<List<SuggestionModel>>(CacheName);
         if (output is null)
         {
-            var results = await _suggestions.FindAsync(s => !s.Archived);
+            var results = await _suggestions.FindAsync(s => s.SuggestionStatus != null && s.SuggestionName != "archived");
             output = results.ToList();
 
             _cache.Set(CacheName, output, Globals.OneMinute);
@@ -41,7 +41,7 @@ public class MongoSuggestionData : ISuggestionData
     public async Task<List<SuggestionModel>> GetAllApprovedSuggestions()
     {
         var output = await GetAllSuggestions();
-        return output.Where(s => !s.Rejected).ToList();
+        return output.Where(s => s.SuggestionStatus != null && s.SuggestionName != "rejected").ToList();
     }
 
     public async Task<SuggestionModel> GetSuggestion(string id)
