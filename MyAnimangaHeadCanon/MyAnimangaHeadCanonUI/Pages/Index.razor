@@ -1,8 +1,65 @@
 ﻿@page "/"
+@inject ICategoryData categoryData
+@inject IStatusData statusData
+@inject ISuggestionData suggestionData
+@inject IUserData userData
+@inject ISourceData sourceData
+@inject NavigationManager navManager
+@inject ProtectedSessionStorage sessionStorage
 
-<PageTitle>Index</PageTitle>
+<PageTitle>My AniManga Head Canon</PageTitle>
 
-<h1>Hello, world!</h1>
+@code {
+    private List<CategoryModel> categories;
+    private List<StatusModel> statuses;
+    private List<SuggestionModel> suggestions;
+    private List<SourceModel> sources;
 
-Welcome to your new app.
+    private string selectedCategory = "All";
+    private string selectedStatus = "All";
+    private string searchText = String.Empty;
+    bool isSortedByNew = true;
 
+    protected async override Task OnInitializedAsync()
+    {
+        categories = await categoryData.GetAllCategories();
+        statuses = await statusData.GetAllStatuses();
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadFilterState();
+            await FilterSuggestions();
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadFilterState()
+    {
+        var stringResults = await sessionStorage.GetAsync<string>(nameof(selectedCategory));
+        selectedCategory = stringResults.Success ? stringResults.Value : "All";
+
+        stringResults = await sessionStorage.GetAsync<string>(nameof(selectedStatus));
+        selectedStatus = stringResults.Success ? stringResults.Value : "All";
+
+        stringResults = await sessionStorage.GetAsync<string>(nameof(searchText));
+        searchText = stringResults.Success ? stringResults.Value : String.Empty;
+
+        var boolResults = await sessionStorage.GetAsync<bool>(nameof(isSortedByNew));
+        isSortedByNew = boolResults.Success ? boolResults.Value : true;
+    }
+
+    private async Task FilterSuggestions()
+    {
+        var output = await suggestionData.GetAllApprovedSuggestions();
+
+        if (selectedCategory != "All")
+        {
+            output = output.Where(s => s.Category?.CategoryName == selectedCategory).ToList();
+        }
+    }
+
+
+}
