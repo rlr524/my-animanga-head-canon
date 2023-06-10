@@ -29,7 +29,7 @@ public class MongoStatusData : IStatusData
             var results = await _statuses.FindAsync(_ => true);
             output = results.ToList();
 
-            _cache.Set(CacheName, output, Globals.OneDay);
+            _cache.Set(CacheName, output, TimeSpan.FromDays(1));
         }
         return output;
     }
