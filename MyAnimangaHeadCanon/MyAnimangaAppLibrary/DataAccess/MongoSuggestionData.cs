@@ -32,7 +32,7 @@ public class MongoSuggestionData : ISuggestionData
             var results = await _suggestions.FindAsync(s => s.SuggestionStatus != null && s.SuggestionName != "archived");
             output = results.ToList();
 
-            _cache.Set(CacheName, output, Globals.OneMinute);
+            _cache.Set(CacheName, output, TimeSpan.FromMinutes(1));
         }
 
         return output;
@@ -110,7 +110,7 @@ public class MongoSuggestionData : ISuggestionData
         {
             await using (StreamWriter writer = new(Globals.LogPath))
             {
-                await writer.WriteLineAsync($"{Globals.Now} - Error committing suggestion upvote: {ex}");
+                await writer.WriteLineAsync($"{DateTime.Now} - Error committing suggestion upvote: {ex}");
             }
 
             await session.AbortTransactionAsync();

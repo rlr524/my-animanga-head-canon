@@ -75,6 +75,8 @@ else
         await CategoryData.CreateCategory(cm);
 
         _categoriesCreated = true;
+
+        // Console.WriteLine(categories[3]);
     }
 
     private async Task CreateStatuses()
@@ -122,6 +124,8 @@ else
         await StatusData.CreateStatus(sm);
 
         _statusesCreated = true;
+
+        // Console.WriteLine(statuses[2]);
     }
     
         private async Task CreateSampleData()
@@ -152,6 +156,7 @@ else
             Author = new BasicUserModel(foundUser),
             Category = categories[0],
             SuggestionName = "First sample suggestion",
+            SuggestionStatus = statuses[0],
             SuggestionDescription = "This is a sample suggestion created by the sample data page"
         };
         await SuggestionData.CreateSuggestion(suggestion);
