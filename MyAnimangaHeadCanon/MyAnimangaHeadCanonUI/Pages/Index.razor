@@ -10,23 +10,23 @@
 <PageTitle>My AniManga Head Canon</PageTitle>
 
 @code {
-    private List<CategoryModel> categories;
-    private List<StatusModel> statuses;
-    private List<SuggestionModel> suggestions;
-    private List<SourceModel> sources;
+    private List<CategoryModel> _categories;
+    private List<StatusModel> _statuses;
+    private List<SuggestionModel> _suggestions;
+    private List<SourceModel> _sources;
 
-    private string selectedCategory = "All";
-    private string selectedStatus = "All";
-    private string searchText = String.Empty;
-    bool isSortedByNew = true;
+    private string _selectedCategory = "All";
+    private string _selectedStatus = "All";
+    private string _searchText = String.Empty;
+    bool _isSortedByNew = true;
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        categories = await categoryData.GetAllCategories();
-        statuses = await statusData.GetAllStatuses();
+        _categories = await categoryData.GetAllCategories();
+        _statuses = await statusData.GetAllStatuses();
     }
 
-    protected async override Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
@@ -38,26 +38,26 @@
 
     private async Task LoadFilterState()
     {
-        var stringResults = await sessionStorage.GetAsync<string>(nameof(selectedCategory));
-        selectedCategory = stringResults.Success ? stringResults.Value : "All";
+        var stringResults = await sessionStorage.GetAsync<string>(nameof(_selectedCategory));
+        _selectedCategory = stringResults.Success ? stringResults.Value : "All";
 
-        stringResults = await sessionStorage.GetAsync<string>(nameof(selectedStatus));
-        selectedStatus = stringResults.Success ? stringResults.Value : "All";
+        stringResults = await sessionStorage.GetAsync<string>(nameof(_selectedStatus));
+        _selectedStatus = stringResults.Success ? stringResults.Value : "All";
 
-        stringResults = await sessionStorage.GetAsync<string>(nameof(searchText));
-        searchText = stringResults.Success ? stringResults.Value : String.Empty;
+        stringResults = await sessionStorage.GetAsync<string>(nameof(_searchText));
+        _searchText = stringResults.Success ? stringResults.Value : String.Empty;
 
-        var boolResults = await sessionStorage.GetAsync<bool>(nameof(isSortedByNew));
-        isSortedByNew = boolResults.Success ? boolResults.Value : true;
+        var boolResults = await sessionStorage.GetAsync<bool>(nameof(_isSortedByNew));
+        _isSortedByNew = boolResults.Success ? boolResults.Value : true;
     }
 
     private async Task FilterSuggestions()
     {
         var output = await suggestionData.GetAllApprovedSuggestions();
 
-        if (selectedCategory != "All")
+        if (_selectedCategory != "All")
         {
-            output = output.Where(s => s.Category?.CategoryName == selectedCategory).ToList();
+            output = output.Where(s => s.Category?.CategoryName == _selectedCategory).ToList();
         }
     }
 

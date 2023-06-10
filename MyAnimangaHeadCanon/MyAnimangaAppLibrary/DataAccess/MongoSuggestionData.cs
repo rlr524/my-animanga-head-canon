@@ -32,7 +32,7 @@ public class MongoSuggestionData : ISuggestionData
             var results = await _suggestions.FindAsync(s => s.SuggestionStatus != null && s.SuggestionName != "archived");
             output = results.ToList();
 
-            _cache.Set(CacheName, output, TimeSpan.FromMinutes(1));
+            _cache.Set(CacheName, output, Globals.OneMinute);
         }
 
         return output;
