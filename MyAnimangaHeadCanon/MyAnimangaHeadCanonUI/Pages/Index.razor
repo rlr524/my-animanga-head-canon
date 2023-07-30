@@ -18,7 +18,7 @@
     private string _selectedCategory = "All";
     private string _selectedStatus = "All";
     private string _searchText = String.Empty;
-    bool _isSortedByNew = true;
+    private bool _isSortedByNew = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -51,15 +51,54 @@
         _isSortedByNew = boolResults.Success ? boolResults.Value : true;
     }
 
+    private async Task SaveFilterState()
+    {
+        await sessionStorage.SetAsync(nameof(_selectedCategory), _selectedCategory);
+        await sessionStorage.SetAsync(nameof(_selectedStatus), _selectedStatus);
+        await sessionStorage.SetAsync(nameof(_searchText), _searchText);
+        await sessionStorage.SetAsync(nameof(_isSortedByNew), _isSortedByNew);
+    }
+
     private async Task FilterSuggestions()
     {
         var output = await suggestionData.GetAllApprovedSuggestions();
 
+        // Filer results by a selected category
         if (_selectedCategory != "All")
         {
             output = output.Where(s => s.Category?.CategoryName == _selectedCategory).ToList();
         }
+
+        // Filter results by a selected status
+        if (_selectedStatus != "All")
+        {
+            output = output.Where(s => s.SuggestionStatus?.StatusName == _selectedStatus).ToList();
+        }
+
+        // Filter results by a specific search term found in the suggestion name or description
+        if (string.IsNullOrWhiteSpace(_searchText) == false)
+        {
+            output = output.Where(
+                s => s.SuggestionName.Contains(_searchText,
+                    StringComparison.InvariantCultureIgnoreCase) || 
+                    s.SuggestionDescription.Contains(_searchText,
+                    StringComparison.InvariantCultureIgnoreCase)
+            ).ToList();
+        }
+
+        // Order by date created or by user votes then date created
+        if (_isSortedByNew)
+        {
+            output = output.OrderByDescending(s => s.DateCreated).ToList();
+        }
+        else
+        {
+            output = output.OrderByDescending(s => s.UserVotes.Count)
+                            .ThenByDescending(s => s.DateCreated).ToList();
+        }
+
+        _suggestions = output;
+
+        await SaveFilterState();
     }
-
-
 }
