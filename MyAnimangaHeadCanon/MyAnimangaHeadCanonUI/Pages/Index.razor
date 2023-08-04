@@ -101,4 +101,28 @@
 
         await SaveFilterState();
     }
+
+    private async Task OrderByNew(bool isNew)
+    {
+        _isSortedByNew = isNew;
+        await FilterSuggestions();
+    }
+
+    private async Task OnSearchInput(string searchInput)
+    {
+        _searchText = searchInput;
+        await FilterSuggestions();
+    }
+
+    private async Task OnCategoryClick(string category = "All")
+    {
+        _selectedCategory = category;
+        await FilterSuggestions();
+    }
+
+    private async Task OnStatusClick(string status = "All")
+    {
+        _selectedStatus = status;
+        await FilterSuggestions();
+    }
 }
